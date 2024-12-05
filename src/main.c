@@ -4,13 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define W_WIDTH 800
-#define W_HEIGHT 600
+#define DEFAULT_WINDOW_WIDTH 800
+#define DEFAULT_WINDOW_HEIGHT 600
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 SDL_Texture *color_buffer_texture = NULL;
 bool is_running = false;
+
+int window_width = DEFAULT_WINDOW_WIDTH;
+int window_height = DEFAULT_WINDOW_HEIGHT;
 
 // Represent colors in ARGB8888 format.
 typedef uint32_t argb_t;
@@ -24,9 +27,15 @@ bool init_window(void) {
     return false;
   }
 
+  SDL_DisplayMode display_mode;
+  SDL_GetCurrentDisplayMode(0, &display_mode);
+
+  window_width = display_mode.w;
+  window_height = display_mode.h;
+
   window =
       SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                       W_WIDTH, W_HEIGHT, SDL_WINDOW_BORDERLESS);
+                       window_width, window_height, SDL_WINDOW_BORDERLESS);
 
   if (!window) {
     fprintf(stderr, "Error creating SDL window.\n");
@@ -61,11 +70,12 @@ void process_input() {
 }
 
 void setup(void) {
-  color_buffer = (argb_t *)malloc(sizeof(argb_t) * W_WIDTH * W_HEIGHT);
+  color_buffer =
+      (argb_t *)malloc(sizeof(argb_t) * window_width * window_height);
 
-  color_buffer_texture =
-      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                        SDL_TEXTUREACCESS_STREAMING, W_WIDTH, W_HEIGHT);
+  color_buffer_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                           SDL_TEXTUREACCESS_STREAMING,
+                                           window_width, window_height);
 }
 
 void destroy_window(void) {
@@ -78,16 +88,16 @@ void destroy_window(void) {
 void update(void) {}
 
 void clear_color_buffer(argb_t color) {
-  for (int y = 0; y < W_HEIGHT; y++) {
-    for (int x = 0; x < W_WIDTH; x++) {
-      color_buffer[(W_WIDTH * y) + x] = color;
+  for (int y = 0; y < window_height; y++) {
+    for (int x = 0; x < window_width; x++) {
+      color_buffer[(window_width * y) + x] = color;
     }
   }
 }
 
 void render_color_buffer(void) {
   SDL_UpdateTexture(color_buffer_texture, NULL, color_buffer,
-                    (int)(W_WIDTH * sizeof(argb_t)));
+                    (int)(window_width * sizeof(argb_t)));
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
