@@ -9,11 +9,13 @@
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+SDL_Texture *color_buffer_texture = NULL;
 bool is_running = false;
 
-typedef uint32_t rgba_t;
+// Represent colors in ARGB8888 format.
+typedef uint32_t argb_t;
 
-rgba_t *color_buffer = NULL;
+argb_t *color_buffer = NULL;
 
 bool init_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -59,7 +61,11 @@ void process_input() {
 }
 
 void setup(void) {
-  color_buffer = (rgba_t *)malloc(sizeof(rgba_t) * W_WIDTH + W_HEIGHT);
+  color_buffer = (argb_t *)malloc(sizeof(argb_t) * W_WIDTH * W_HEIGHT);
+
+  color_buffer_texture =
+      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                        SDL_TEXTUREACCESS_STREAMING, W_WIDTH, W_HEIGHT);
 }
 
 void destroy_window(void) {
@@ -71,9 +77,26 @@ void destroy_window(void) {
 
 void update(void) {}
 
+void clear_color_buffer(argb_t color) {
+  for (int y = 0; y < W_HEIGHT; y++) {
+    for (int x = 0; x < W_WIDTH; x++) {
+      color_buffer[(W_WIDTH * y) + x] = color;
+    }
+  }
+}
+
+void render_color_buffer(void) {
+  SDL_UpdateTexture(color_buffer_texture, NULL, color_buffer,
+                    (int)(W_WIDTH * sizeof(argb_t)));
+  SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+}
+
 void render(void) {
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
   SDL_RenderClear(renderer);
+
+  render_color_buffer();
+  clear_color_buffer(0xFFFFFF00);
 
   SDL_RenderPresent(renderer);
 }
