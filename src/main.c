@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -50,6 +51,8 @@ bool init_window(void) {
 
     return false;
   }
+
+  SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
   return true;
 }
