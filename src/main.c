@@ -10,6 +10,7 @@
 
 #define COLOR_BLACK 0xFF000000
 #define COLOR_WHITE 0xFFFFFFFF
+#define COLOR_BLUE 0xFF0000FF
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
@@ -111,6 +112,14 @@ void draw_grid(argb_t color) {
   }
 }
 
+void draw_rect(int x, int y, int width, int height, argb_t color) {
+  for (int _y = y; _y < y + height; _y++) {
+    for (int _x = x; _x < x + width; _x++) {
+      color_buffer[(window_width * _y) + _x] = color;
+    }
+  }
+}
+
 void render_color_buffer(void) {
   SDL_UpdateTexture(color_buffer_texture, NULL, color_buffer,
                     (int)(window_width * sizeof(argb_t)));
@@ -127,6 +136,7 @@ void render(void) {
   // draw for next frame
   clear_color_buffer(COLOR_BLACK);
   draw_grid(COLOR_WHITE);
+  draw_rect(333, 157, 79, 237, COLOR_BLUE);
 
   SDL_RenderPresent(renderer);
 }
