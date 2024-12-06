@@ -23,6 +23,7 @@ void destroy_window(void);
 void clear_color_buffer(argb_t color);
 void draw_grid(argb_t color);
 void draw_rect(int x, int y, int width, int height, argb_t color);
+void draw_pixel(int x, int y, argb_t color);
 void render_color_buffer(void);
 
 #endif

@@ -65,7 +65,7 @@ void destroy_window(void) {
 void clear_color_buffer(argb_t color) {
   for (int y = 0; y < window_height; y++) {
     for (int x = 0; x < window_width; x++) {
-      color_buffer[(window_width * y) + x] = color;
+      draw_pixel(x, y, color);
     }
   }
 }
@@ -74,7 +74,7 @@ void draw_grid(argb_t color) {
   for (int y = 0; y < window_height; y++) {
     for (int x = 0; x < window_width; x++) {
       if (x % 10 == 0 || y % 10 == 0) {
-        color_buffer[(window_width * y) + x] = color;
+        draw_pixel(x, y, color);
       }
     }
   }
@@ -83,8 +83,14 @@ void draw_grid(argb_t color) {
 void draw_rect(int x, int y, int width, int height, argb_t color) {
   for (int _y = y; _y < y + height; _y++) {
     for (int _x = x; _x < x + width; _x++) {
-      color_buffer[(window_width * _y) + _x] = color;
+      draw_pixel(_x, _y, color);
     }
+  }
+}
+
+void draw_pixel(int x, int y, argb_t color) {
+  if (x < window_width && y < window_height) {
+    color_buffer[(window_width * y) + x] = color;
   }
 }
 
