@@ -11,6 +11,11 @@
 // Represent colors in ARGB8888 format.
 typedef uint32_t argb_t;
 
+/*typedef struct {*/
+/*  int window_width;*/
+/*  int window_height;*/
+/*} viewport_t;*/
+
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 extern SDL_Texture *color_buffer_texture;

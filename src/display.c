@@ -1,6 +1,5 @@
 #include "display.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -89,7 +88,7 @@ void draw_rect(int x, int y, int width, int height, argb_t color) {
 }
 
 void draw_pixel(int x, int y, argb_t color) {
-  if (x < window_width && y < window_height) {
+  if (x >= 0 && x < window_width && y >= 0 && y < window_height) {
     color_buffer[(window_width * y) + x] = color;
   }
 }
