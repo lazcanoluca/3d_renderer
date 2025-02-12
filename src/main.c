@@ -1,10 +1,14 @@
 #include "display.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_timer.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define FPS 30
+#define FRAME_TARGET_TIME (1000 / FPS)
 
 #define N_POINTS 729
 
@@ -24,6 +28,7 @@ float fov_factor = 640;
 #define COLOR_YELLOW 0xFFFFFF00
 
 bool is_running = false;
+int previous_frame_time = 0;
 
 void process_input() {
   SDL_Event event;
@@ -72,6 +77,15 @@ vec2_t project(vec3_t point) {
 }
 
 void update(void) {
+
+  int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
+
+  if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
+    SDL_Delay(time_to_wait);
+  }
+
+  previous_frame_time = SDL_GetTicks();
+
   cube_rotation.y += 0.01;
 
   for (int i = 0; i < N_POINTS; i++) {

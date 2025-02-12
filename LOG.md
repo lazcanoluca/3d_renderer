@@ -36,4 +36,7 @@ vec3_t cube_points[N_POINTS];
 - 7.05 vector rotation function
 
 ## 24/01
-- 7.05 proof of angle sine addition
+- 7.06 proof of angle sine addition
+- 7.08 proof of angle cosine addition
+- 8.01 fixing game loop time step
+- 8.02 using delay function
