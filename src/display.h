@@ -29,6 +29,9 @@ void clear_color_buffer(argb_t color);
 void draw_grid(argb_t color);
 void draw_rect(int x, int y, int width, int height, argb_t color);
 void draw_pixel(int x, int y, argb_t color);
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2,
+                   argb_t color);
+void draw_line(int x0, int y0, int x1, int y1, argb_t color);
 void render_color_buffer(void);
 
 #endif

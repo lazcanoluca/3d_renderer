@@ -46,3 +46,10 @@ vec3_t cube_points[N_POINTS];
 
 ## 22/02
 - 9.02 vertices and triangle faces
+- 9.03 drawing triangles
+- 10.01 line equation
+- 10.02 dda line drawing algorithm
+
+line drawing algorithms:
+- dda -> easy
+- bresenham -> fast

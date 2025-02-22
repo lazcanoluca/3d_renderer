@@ -26,6 +26,7 @@ float fov_factor = 640;
 #define COLOR_WHITE 0xFFFFFFFF
 #define COLOR_BLUE 0xFF0000FF
 #define COLOR_YELLOW 0xFFFFFF00
+#define COLOR_GREEN 0xFF00FF00
 
 bool is_running = false;
 int previous_frame_time = 0;
@@ -58,8 +59,8 @@ void setup(void) {
 
 vec2_t project(vec3_t point) {
   vec2_t projected = {
-      .x = (fov_factor * point.x) / point.z,
-      .y = (fov_factor * point.y) / point.z,
+      (fov_factor * point.x) / point.z,
+      (fov_factor * point.y) / point.z,
   };
 
   return projected;
@@ -75,9 +76,9 @@ void update(void) {
 
   previous_frame_time = SDL_GetTicks();
 
-  cube_rotation.x += 0.015;
+  cube_rotation.x += 0.01;
   cube_rotation.y += 0.01;
-  cube_rotation.z += 0.03;
+  cube_rotation.z += 0.01;
 
   // loop all triangle faces
   for (int i = 0; i < N_MESH_FACES; i++) {
@@ -120,9 +121,15 @@ void render(void) {
   // loop all projected triangles and render them
   for (int i = 0; i < N_MESH_FACES; i++) {
     triangle_t triangle = triangles_to_render[i];
+
     draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, COLOR_YELLOW);
     draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, COLOR_YELLOW);
     draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, COLOR_YELLOW);
+
+    // draw unfilled tri
+    draw_triangle(triangle.points[0].x, triangle.points[0].y,
+                  triangle.points[1].x, triangle.points[1].y,
+                  triangle.points[2].x, triangle.points[2].y, COLOR_YELLOW);
   }
 
   // render to sdl buffer
@@ -138,8 +145,6 @@ int main(void) {
   is_running = init_window();
 
   setup();
-
-  /*vec3_t a_vector = {2.0, 3.0, -4.0};*/
 
   while (is_running) {
     process_input();
