@@ -40,3 +40,9 @@ vec3_t cube_points[N_POINTS];
 - 7.08 proof of angle cosine addition
 - 8.01 fixing game loop time step
 - 8.02 using delay function
+
+## 16/02
+- 9.01 triangles and meshes
+
+## 22/02
+- 9.02 vertices and triangle faces
