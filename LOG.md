@@ -53,3 +53,6 @@ vec3_t cube_points[N_POINTS];
 line drawing algorithms:
 - dda -> easy
 - bresenham -> fast
+
+- 10.03 coding a function to draw lines
+- 11.01 dynamic arrays
