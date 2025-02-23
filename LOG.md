@@ -56,3 +56,6 @@ line drawing algorithms:
 
 - 10.03 coding a function to draw lines
 - 11.01 dynamic arrays
+
+TODO: make functions pure -> globals bad
+TODO: functions should take pointers to instances and modify, weird otherwise
