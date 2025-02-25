@@ -59,3 +59,14 @@ line drawing algorithms:
 
 TODO: make functions pure -> globals bad
 TODO: functions should take pointers to instances and modify, weird otherwise
+
+## 23-24/02
+- 12.xx obj files
+
+## 25/02
+- 13.01 backface culling motivation
+- 13.03 vector magnitude
+- 13.04 vector addition and substraction
+- 13.05 vector scalar multiplication and division
+- 13.06 vector cross product
+- 13.07 finding the normal vector
