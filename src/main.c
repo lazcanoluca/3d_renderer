@@ -7,6 +7,7 @@
 #include <SDL2/SDL_timer.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #define FPS 30
@@ -55,7 +56,8 @@ void setup(void) {
                                            SDL_TEXTUREACCESS_STREAMING,
                                            window_width, window_height);
 
-  load_cube_mesh_data();
+  /*load_cube_mesh_data();*/
+  load_obj_file_data("./assets/f22.obj");
 }
 
 vec2_t project(vec3_t point) {
