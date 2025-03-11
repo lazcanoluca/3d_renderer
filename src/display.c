@@ -97,7 +97,7 @@ void draw_line(int x0, int y0, int x1, int y1, argb_t color) {
   int delta_y = (y1 - y0);
 
   int longest_side_length =
-      (abs(delta_x >= delta_y)) ? abs(delta_x) : abs(delta_y);
+      (abs(delta_x) >= abs(delta_y)) ? abs(delta_x) : abs(delta_y);
 
   float x_inc = delta_x / (float)longest_side_length;
   float y_inc = delta_y / (float)longest_side_length;
