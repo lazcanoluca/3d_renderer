@@ -70,3 +70,9 @@ TODO: functions should take pointers to instances and modify, weird otherwise
 - 13.05 vector scalar multiplication and division
 - 13.06 vector cross product
 - 13.07 finding the normal vector
+- 13.08 dot product
+
+## 11/03
+- 13.10 backface culling algorithm
+- 13.11 backface culling code
+while i'm having a great time with this 3d renderer, and really respect graphic programmers, i'm finding out that this is not for me.
