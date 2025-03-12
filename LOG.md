@@ -76,3 +76,6 @@ TODO: functions should take pointers to instances and modify, weird otherwise
 - 13.10 backface culling algorithm
 - 13.11 backface culling code
 while i'm having a great time with this 3d renderer, and really respect graphic programmers, i'm finding out that this is not for me.
+
+## 12/03
+- 13.13 vector normalization
