@@ -11,6 +11,19 @@
 // Represent colors in ARGB8888 format.
 typedef uint32_t argb_t;
 
+enum cull_method { CULL_NONE, CULL_BACKFACE };
+extern enum cull_method cull_method;
+void cull_method_toggle(enum cull_method *cull_method);
+
+enum render_method {
+  RENDER_WIRE,
+  RENDER_WIRE_VERTEX,
+  RENDER_FILL_TRIANGLE,
+  RENDER_FILL_TRIANGLE_WIRE
+};
+extern enum render_method render_method;
+void toggle_render_method(enum render_method *render_method);
+
 /*typedef struct {*/
 /*  int window_width;*/
 /*  int window_height;*/

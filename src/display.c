@@ -1,6 +1,7 @@
 #include "display.h"
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +18,20 @@ int window_width = DEFAULT_WINDOW_WIDTH;
 int window_height = DEFAULT_WINDOW_HEIGHT;
 
 // Represent colors in ARGB8888 format.
+enum cull_method cull_method;
+
+void cull_method_toggle(enum cull_method *cull_method) {
+  switch (*cull_method) {
+  case CULL_BACKFACE:
+    *cull_method = CULL_NONE;
+    break;
+  case CULL_NONE:
+    *cull_method = CULL_BACKFACE;
+    break;
+  }
+}
+
+enum render_method render_method;
 
 bool init_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {

@@ -4,6 +4,7 @@
 #include "triangle.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_timer.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -42,11 +43,26 @@ void process_input() {
   case SDL_KEYDOWN:
     if (event.key.keysym.sym == SDLK_ESCAPE)
       is_running = false;
+    if (event.key.keysym.sym == SDLK_2) {
+      cull_method_toggle(&cull_method);
+
+      switch (cull_method) {
+      case CULL_NONE:
+        printf("Backface culling disabled\n");
+        break;
+      case CULL_BACKFACE:
+        printf("Backface culling enabled\n");
+        break;
+      }
+    }
     break;
   }
 }
 
 void setup(void) {
+  render_method = RENDER_WIRE;
+  cull_method = CULL_BACKFACE;
+
   color_buffer =
       (argb_t *)malloc(sizeof(argb_t) * window_width * window_height);
 
@@ -110,28 +126,29 @@ void update(void) {
     }
 
     // TODO: check backface culling
-    vec3_t vector_a = transformed_vertices[0];
-    vec3_t vector_b = transformed_vertices[1];
-    vec3_t vector_c = transformed_vertices[2];
+    if (cull_method == CULL_BACKFACE) {
+      vec3_t vector_a = transformed_vertices[0];
+      vec3_t vector_b = transformed_vertices[1];
+      vec3_t vector_c = transformed_vertices[2];
 
-    vec3_t vector_ab = vec3_sub(vector_b, vector_a);
-    vec3_t vector_ac = vec3_sub(vector_c, vector_a);
-    vec3_normalize(&vector_ab);
-    vec3_normalize(&vector_ac);
+      vec3_t vector_ab = vec3_sub(vector_b, vector_a);
+      vec3_t vector_ac = vec3_sub(vector_c, vector_a);
+      vec3_normalize(&vector_ab);
+      vec3_normalize(&vector_ac);
 
-    vec3_t normal = vec3_cross(vector_ab, vector_ac);
-    vec3_normalize(&normal);
+      vec3_t normal = vec3_cross(vector_ab, vector_ac);
+      vec3_normalize(&normal);
 
-    vec3_t camera_ray = vec3_sub(camera_position, vector_a);
+      vec3_t camera_ray = vec3_sub(camera_position, vector_a);
 
-    // calc how aligned the camera ray is with the face normal
-    float dot_normal_camera = vec3_dot(normal, camera_ray);
+      // calc how aligned the camera ray is with the face normal
+      float dot_normal_camera = vec3_dot(normal, camera_ray);
 
-    // bypass the triangles that are looking away from the camera
-    if (dot_normal_camera < 0) {
-      continue;
+      // bypass the triangles that are looking away from the camera
+      if (dot_normal_camera < 0) {
+        continue;
+      }
     }
-
     triangle_t projected_triangle;
 
     // loop all 3 vertices of the face to perform projection
@@ -160,14 +177,14 @@ void render(void) {
   for (int i = 0; i < num_triangles; i++) {
     triangle_t triangle = triangles_to_render[i];
 
-    draw_filled_triangle(triangle.points[0].x, triangle.points[0].y,
-                         triangle.points[1].x, triangle.points[1].y,
-                         triangle.points[2].x, triangle.points[2].y,
-                         COLOR_WHITE);
+    /*draw_filled_triangle(triangle.points[0].x, triangle.points[0].y,*/
+    /*                     triangle.points[1].x, triangle.points[1].y,*/
+    /*                     triangle.points[2].x, triangle.points[2].y,*/
+    /*                     COLOR_WHITE);*/
 
     draw_triangle(triangle.points[0].x, triangle.points[0].y,
                   triangle.points[1].x, triangle.points[1].y,
-                  triangle.points[2].x, triangle.points[2].y, COLOR_BLACK);
+                  triangle.points[2].x, triangle.points[2].y, COLOR_YELLOW);
   }
 
   // clear the array of tris to render every frame loop
