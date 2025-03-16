@@ -79,3 +79,15 @@ while i'm having a great time with this 3d renderer, and really respect graphic 
 
 ## 12/03
 - 13.13 vector normalization
+- 14.01 triangle fill
+- 14.02 flat-bottom & flat-top technique
+- 14.04 finding the triangle midpoint vertex
+
+## 14/03
+- 14.05 coding the triangle midpoint vertex
+- 14.06 flat-bottom triangle algorithm
+- 14.07 flat-bottom triangle code
+
+## 16/03
+- 14.08 flat-top triangle algorithm
+- 14.09 flat-top triangle code

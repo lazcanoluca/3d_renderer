@@ -160,14 +160,14 @@ void render(void) {
   for (int i = 0; i < num_triangles; i++) {
     triangle_t triangle = triangles_to_render[i];
 
-    draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, COLOR_YELLOW);
-    draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, COLOR_YELLOW);
-    draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, COLOR_YELLOW);
+    draw_filled_triangle(triangle.points[0].x, triangle.points[0].y,
+                         triangle.points[1].x, triangle.points[1].y,
+                         triangle.points[2].x, triangle.points[2].y,
+                         COLOR_WHITE);
 
-    // draw unfilled tri
     draw_triangle(triangle.points[0].x, triangle.points[0].y,
                   triangle.points[1].x, triangle.points[1].y,
-                  triangle.points[2].x, triangle.points[2].y, COLOR_YELLOW);
+                  triangle.points[2].x, triangle.points[2].y, COLOR_BLACK);
   }
 
   // clear the array of tris to render every frame loop
