@@ -1,22 +1,40 @@
 CC = gcc
 CFLAGS = -Wall -Werror -std=c99 -I./lib
-LDFLAGS = -L./lib -larray -lSDL2 -lm
+DEBUG_FLAGS = -ggdb -O0
+RELEASE_FLAGS = -O2 -DNDEBUG
+LDFLAGS = -L$(BUILD_DIR) -larray -lSDL2 -lm
 SRC = ./src/*.c
-TARGET = renderer
+BUILD_DIR = build
+TARGET_DEBUG = $(BUILD_DIR)/renderer_debug
+TARGET_RELEASE = $(BUILD_DIR)/renderer_release
+LIBRARY = $(BUILD_DIR)/libarray.a
 
-clean-build-run: clean build run
+# Ensure build directory exists
+$(shell mkdir -p $(BUILD_DIR))
 
-build: ./lib/libarray.a
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LDFLAGS)
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: build-debug run-debug
 
-./lib/libarray.a: ./lib/array.c
-	$(CC) $(CFLAGS) -c $< -o ./lib/array.o
-	ar rcs $@ ./lib/array.o
+release: CFLAGS += $(RELEASE_FLAGS)
+release: build-release run-release
 
-run:
-	./$(TARGET)
+build-debug: $(LIBRARY)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET_DEBUG) $(LDFLAGS)
+
+build-release: $(LIBRARY)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET_RELEASE) $(LDFLAGS)
+
+$(LIBRARY): ./lib/array.c
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $(BUILD_DIR)/array.o
+	ar rcs $@ $(BUILD_DIR)/array.o
+
+run-debug:
+	./$(TARGET_DEBUG)
+
+run-release:
+	./$(TARGET_RELEASE)
 
 clean:
-	rm -f $(TARGET) ./lib/array.o ./lib/libarray.a
+	rm -rf $(BUILD_DIR)
 
 
