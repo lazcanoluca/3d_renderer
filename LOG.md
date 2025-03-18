@@ -100,3 +100,5 @@ TODO: add a logger to log events and stuff
 ## 18/03
 - 14.15 colored triangle faces
 TODO: save controls and config in config file (find a format or just invent it?)
+- 15.01 painter's algorithm
+- 15.03 coding a sorting function
