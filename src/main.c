@@ -94,7 +94,8 @@ void setup(void) {
                                            window_width, window_height);
 
   /*load_obj_file_data("./assets/f22.obj");*/
-  load_obj_file_data("./assets/cube.obj");
+  /*load_obj_file_data("./assets/cube.obj");*/
+  load_cube_mesh_data();
 }
 
 vec2_t project(vec3_t point) {
@@ -170,18 +171,31 @@ void update(void) {
         continue;
       }
     }
-    triangle_t projected_triangle;
+
+    vec2_t projected_points[3];
 
     // loop all 3 vertices of the face to perform projection
     for (int j = 0; j < 3; j++) {
-      vec2_t projected_point = project(transformed_vertices[j]);
+      projected_points[j] = project(transformed_vertices[j]);
 
       // sclae and translate the projected points to the middle of the screen
-      projected_point.x += (window_width / 2.0);
-      projected_point.y += (window_height / 2.0);
-
-      projected_triangle.points[j] = projected_point;
+      projected_points[j].x += (window_width / 2.0);
+      projected_points[j].y += (window_height / 2.0);
     }
+
+    triangle_t projected_triangle = {.points = {{
+                                                    projected_points[0].x,
+                                                    projected_points[0].y,
+                                                },
+                                                {
+                                                    projected_points[1].x,
+                                                    projected_points[1].y,
+                                                },
+                                                {
+                                                    projected_points[2].x,
+                                                    projected_points[2].y,
+                                                }},
+                                     .color = mesh_face.color};
 
     // save the projected triangle in the array of triangles to render
     /*triangles_to_render[i] = projected_triangle;*/
@@ -203,7 +217,7 @@ void render(void) {
       draw_filled_triangle(triangle.points[0].x, triangle.points[0].y,
                            triangle.points[1].x, triangle.points[1].y,
                            triangle.points[2].x, triangle.points[2].y,
-                           COLOR_WHITE);
+                           triangle.color);
 
     if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX ||
         render_method == RENDER_FILL_TRIANGLE_WIRE)

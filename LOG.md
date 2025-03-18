@@ -96,3 +96,7 @@ TODO: add a logger to log events and stuff
 
 ## 17/03
 - 14.12 different rendering options
+
+## 18/03
+- 14.15 colored triangle faces
+TODO: save controls and config in config file (find a format or just invent it?)
