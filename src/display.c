@@ -33,6 +33,23 @@ void cull_method_toggle(enum cull_method *cull_method) {
 
 enum render_method render_method;
 
+void render_method_toggle(enum render_method *render_method) {
+  switch (*render_method) {
+  case RENDER_WIRE:
+    *render_method = RENDER_WIRE_VERTEX;
+    break;
+  case RENDER_WIRE_VERTEX:
+    *render_method = RENDER_FILL_TRIANGLE;
+    break;
+  case RENDER_FILL_TRIANGLE:
+    *render_method = RENDER_FILL_TRIANGLE_WIRE;
+    break;
+  case RENDER_FILL_TRIANGLE_WIRE:
+    *render_method = RENDER_WIRE;
+    break;
+  }
+}
+
 bool init_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     fprintf(stderr, "Error initializing SDL.\n");

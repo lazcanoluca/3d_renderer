@@ -93,3 +93,6 @@ while i'm having a great time with this 3d renderer, and really respect graphic 
 - 14.09 flat-top triangle code
 - 14.10 avoiding division by zero
 TODO: add a logger to log events and stuff
+
+## 17/03
+- 14.12 different rendering options
