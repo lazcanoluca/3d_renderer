@@ -102,3 +102,11 @@ TODO: add a logger to log events and stuff
 TODO: save controls and config in config file (find a format or just invent it?)
 - 15.01 painter's algorithm
 - 15.03 coding a sorting function
+
+## 19/03
+- 16.02 matrix operations
+
+## 30/03
+- 16.06 2d rotation matrix
+- 17.01 3d matrix transformations
+ 
