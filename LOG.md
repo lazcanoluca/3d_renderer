@@ -109,4 +109,10 @@ TODO: save controls and config in config file (find a format or just invent it?)
 ## 30/03
 - 16.06 2d rotation matrix
 - 17.01 3d matrix transformations
- 
+- finished 17
+
+## 01/04
+- ?
+
+## 16/04
+- 18.03 perspective projection matrix
