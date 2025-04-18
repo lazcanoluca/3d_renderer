@@ -134,15 +134,15 @@ void update(void) {
 
   triangles_to_render = NULL;
 
-  mesh.rotation.x += 0.01;
-  /*mesh.rotation.y += 0.01;*/
-  /*mesh.rotation.z += 0.01;*/
+  mesh.rotation.x += 0.02;
+  mesh.rotation.y += 0.03;
+  mesh.rotation.z += 0.05;
 
   /*mesh.scale.x += 0.002;*/
   /*mesh.scale.y += 0.001;*/
 
   /*mesh.translation.x += 0.01;*/
-  mesh.translation.z = 10.0;
+  mesh.translation.z = 5.0;
 
   mat4_t scale_matrix = mat4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
   mat4_t translation_matrix = mat4_translation(
@@ -227,6 +227,8 @@ void update(void) {
                        transformed_vertices[2].z) /
                       3.0;
 
+    argb_t triangle_color = mesh_face.color;
+
     triangle_t projected_triangle = {.points = {{
                                                     projected_points[0].x,
                                                     projected_points[0].y,
@@ -239,7 +241,7 @@ void update(void) {
                                                     projected_points[2].x,
                                                     projected_points[2].y,
                                                 }},
-                                     .color = mesh_face.color,
+                                     .color = triangle_color,
                                      .avg_depth = avg_depth};
 
     // Sorting the triangles the render by their average depth

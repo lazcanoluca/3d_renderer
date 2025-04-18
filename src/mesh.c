@@ -22,20 +22,35 @@ vec3_t cube_vertices[N_CUBE_VERTICES] = {
 };
 
 face_t cube_faces[N_CUBE_FACES] = {
-    {.a = 1, .b = 2, .c = 3, .color = 0xFF0000FF},
-    {1, 3, 4, 0xFF0000FF},
-    {4, 3, 5, 0xFF00FF00},
-    {4, 5, 6, 0xFF00FF00},
-    {6, 5, 7, 0xFF00FFFF},
-    {6, 7, 8, 0xFF00FFFF},
-    {8, 7, 2, 0xFFFF0000},
-    {8, 2, 1, 0xFFFF0000},
-    {2, 7, 5, 0xFFFF00FF},
-    {2, 5, 3, 0xFFFF00FF},
-    {6, 8, 1, 0xFFFFFF00},
-    {6, 1, 4, 0xFFFFFF00},
+    {.a = 1, .b = 2, .c = 3, .color = 0xFFFFFFFF},
+    {1, 3, 4, 0xFFFFFFFF},
+    {4, 3, 5, 0xFFFFFFFF},
+    {4, 5, 6, 0xFFFFFFFF},
+    {6, 5, 7, 0xFFFFFFFF},
+    {6, 7, 8, 0xFFFFFFFF},
+    {8, 7, 2, 0xFFFFFFFF},
+    {8, 2, 1, 0xFFFFFFFF},
+    {2, 7, 5, 0xFFFFFFFF},
+    {2, 5, 3, 0xFFFFFFFF},
+    {6, 8, 1, 0xFFFFFFFF},
+    {6, 1, 4, 0xFFFFFFFF},
 };
 
+/*face_t cube_faces[N_CUBE_FACES] = {*/
+/*    {.a = 1, .b = 2, .c = 3, .color = 0xFF0000FF},*/
+/*    {1, 3, 4, 0xFF0000FF},*/
+/*    {4, 3, 5, 0xFF00FF00},*/
+/*    {4, 5, 6, 0xFF00FF00},*/
+/*    {6, 5, 7, 0xFF00FFFF},*/
+/*    {6, 7, 8, 0xFF00FFFF},*/
+/*    {8, 7, 2, 0xFFFF0000},*/
+/*    {8, 2, 1, 0xFFFF0000},*/
+/*    {2, 7, 5, 0xFFFF00FF},*/
+/*    {2, 5, 3, 0xFFFF00FF},*/
+/*    {6, 8, 1, 0xFFFFFF00},*/
+/*    {6, 1, 4, 0xFFFFFF00},*/
+/*};*/
+/**/
 void load_cube_mesh_data() {
   for (int i = 0; i < N_CUBE_VERTICES; i++) {
     vec3_t cube_vertex = cube_vertices[i];

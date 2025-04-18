@@ -116,3 +116,9 @@ TODO: save controls and config in config file (find a format or just invent it?)
 
 ## 16/04
 - 18.03 perspective projection matrix
+
+## 17/04
+- 19.01 flat shading
+
+## 18/04
+- begin lighting
