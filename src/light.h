@@ -4,7 +4,7 @@
 #include "vector.h"
 
 typedef struct {
-  vec3_t direction;
+    vec3_t direction;
 } light_t;
 
 // TODO: remove these globals stuff, if i want a light

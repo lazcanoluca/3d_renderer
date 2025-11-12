@@ -2,15 +2,15 @@
 #define VECTOR_H
 
 typedef struct {
-  float x, y;
+    float x, y;
 } vec2_t;
 
 typedef struct {
-  float x, y, z;
+    float x, y, z;
 } vec3_t;
 
 typedef struct {
-  float x, y, z, w;
+    float x, y, z, w;
 } vec4_t;
 
 float vec2_length(vec2_t v);
