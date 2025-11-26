@@ -3,6 +3,7 @@
 #include "light.h"
 #include "matrix.h"
 #include "mesh.h"
+#include "texture.h"
 #include "triangle.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
@@ -69,6 +70,14 @@ void process_input() {
                 printf("Render method: filled triangles and "
                        "wireframe\n");
                 break;
+            case RENDER_TEXTURED:
+                printf("Render method: filled triangles and "
+                       "wireframe\n");
+                break;
+            case RENDER_TEXTURED_WIRE:
+                printf("Render method: filled triangles and "
+                       "wireframe\n");
+                break;
             }
             break;
         }
@@ -101,9 +110,6 @@ void setup(void) {
                                              SDL_TEXTUREACCESS_STREAMING,
                                              window_width, window_height);
 
-    /*load_obj_file_data("./assets/f22.obj");*/
-    /*load_obj_file_data("./assets/cube.obj");*/
-
     // TODO: make deg conversion math util
     float fov = M_PI / 3.0; // 60 deg
     float aspect = window_height / (float)window_width;
@@ -111,6 +117,13 @@ void setup(void) {
     float zfar = 100.0;
 
     proj_matrix = mat4_perspective(fov, aspect, znear, zfar);
+
+    mesh_texture = (uint32_t *)REDBRICK_TEXTURE;
+    texture_width = 64;
+    texture_width = 64;
+
+    // load_obj_file_data("./assets/f22.obj");
+    /*load_obj_file_data("./assets/cube.obj");*/
 
     load_cube_mesh_data();
 }
@@ -242,20 +255,27 @@ void update(void) {
         argb_t triangle_color =
             light_apply_intensity(mesh_face.color, light_intensity_factor);
 
-        triangle_t projected_triangle = {.points = {{
-                                                        projected_points[0].x,
-                                                        projected_points[0].y,
-                                                    },
-                                                    {
-                                                        projected_points[1].x,
-                                                        projected_points[1].y,
-                                                    },
-                                                    {
-                                                        projected_points[2].x,
-                                                        projected_points[2].y,
-                                                    }},
-                                         .color = triangle_color,
-                                         .avg_depth = avg_depth};
+        triangle_t projected_triangle = {
+            .points = {{
+                           projected_points[0].x,
+                           projected_points[0].y,
+                       },
+                       {
+                           projected_points[1].x,
+                           projected_points[1].y,
+                       },
+                       {
+                           projected_points[2].x,
+                           projected_points[2].y,
+                       }},
+            .texcoords =
+                {
+                    {mesh_face.a_uv.u, mesh_face.a_uv.v},
+                    {mesh_face.b_uv.u, mesh_face.b_uv.v},
+                    {mesh_face.c_uv.u, mesh_face.c_uv.v},
+                },
+            .color = triangle_color,
+            .avg_depth = avg_depth};
 
         // Sorting the triangles the render by their average depth
         int num_triangles = array_length(triangles_to_render);
@@ -285,16 +305,35 @@ void render(void) {
     for (int i = 0; i < num_triangles; i++) {
         triangle_t triangle = triangles_to_render[i];
 
+        float x0 = triangle.points[0].x;
+        float y0 = triangle.points[0].y;
+        float x1 = triangle.points[1].x;
+        float y1 = triangle.points[1].y;
+        float x2 = triangle.points[2].x;
+        float y2 = triangle.points[2].y;
+
+        float u0 = triangle.texcoords[0].u;
+        float v0 = triangle.texcoords[0].v;
+        float u1 = triangle.texcoords[1].u;
+        float v1 = triangle.texcoords[1].v;
+        float u2 = triangle.texcoords[2].u;
+        float v2 = triangle.texcoords[2].v;
+
         if (render_method == RENDER_FILL_TRIANGLE ||
             render_method == RENDER_FILL_TRIANGLE_WIRE)
-            draw_filled_triangle(triangle.points[0].x, triangle.points[0].y,
-                                 triangle.points[1].x, triangle.points[1].y,
-                                 triangle.points[2].x, triangle.points[2].y,
-                                 triangle.color);
+            draw_filled_triangle(x0, y0, x1, y1, x2, y2, triangle.color);
+
+        if (render_method == RENDER_TEXTURED ||
+            render_method == RENDER_TEXTURED_WIRE) {
+            draw_textured_triangle(x0, y0, u0, v0, x1, y1, u1, v1, x2, y2, u2,
+                                   v2, mesh_texture);
+        }
 
         if (render_method == RENDER_WIRE ||
             render_method == RENDER_WIRE_VERTEX ||
-            render_method == RENDER_FILL_TRIANGLE_WIRE)
+            render_method == RENDER_FILL_TRIANGLE_WIRE ||
+            render_method == RENDER_TEXTURED_WIRE)
+            // draw_filled_triangle(x0, y0, x1, y1, x2, y2, COLOR_BLUE);
             draw_triangle(triangle.points[0].x, triangle.points[0].y,
                           triangle.points[1].x, triangle.points[1].y,
                           triangle.points[2].x, triangle.points[2].y,

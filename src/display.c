@@ -45,6 +45,12 @@ void render_method_toggle(enum render_method *render_method) {
         *render_method = RENDER_FILL_TRIANGLE_WIRE;
         break;
     case RENDER_FILL_TRIANGLE_WIRE:
+        *render_method = RENDER_TEXTURED;
+        break;
+    case RENDER_TEXTURED:
+        *render_method = RENDER_TEXTURED_WIRE;
+        break;
+    case RENDER_TEXTURED_WIRE:
         *render_method = RENDER_WIRE;
         break;
     }
@@ -117,6 +123,20 @@ void draw_rect(int x, int y, int width, int height, argb_t color) {
         }
     }
 }
+
+// typedef struct {
+//     int width;
+//     int height;
+//     argb_t buffer[];
+// } window_t;
+
+// void draw_pixel(window_t *window, int x, int y, argb_t color) {
+//     if (x < 0 || y < 0)
+//         return 1;
+
+//     if (x >= window->width || y >= window->height)
+//         return 1;
+// }
 
 void draw_pixel(int x, int y, argb_t color) {
     if (x >= 0 && x < window_width && y >= 0 && y < window_height) {
