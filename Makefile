@@ -1,12 +1,19 @@
 CC = gcc
-CFLAGS = -Wall -Werror -std=c99 -I./lib
+WARN_FLAGS = -Wall -Wextra                # always on
+STRICT_WARN_FLAGS = -Werror               # only for release
+CFLAGS = $(WARN_FLAGS) -std=c99 -I./lib
+
 DEBUG_FLAGS = -ggdb -O0
 RELEASE_FLAGS = -O2 -DNDEBUG
+
 LDFLAGS = -L$(BUILD_DIR) -larray -lSDL2 -lm
+
 SRC = ./src/*.c
 BUILD_DIR = build
+
 TARGET_DEBUG = $(BUILD_DIR)/renderer_debug
 TARGET_RELEASE = $(BUILD_DIR)/renderer_release
+
 LIBRARY = $(BUILD_DIR)/libarray.a
 
 # Ensure build directory exists
@@ -15,7 +22,7 @@ $(shell mkdir -p $(BUILD_DIR))
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: build-debug run-debug
 
-release: CFLAGS += $(RELEASE_FLAGS)
+release: CFLAGS += $(RELEASE_FLAGS) $(STRICT_WARN_FLAGS)
 release: build-release run-release
 
 build-debug: $(LIBRARY)
