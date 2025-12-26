@@ -1,39 +1,47 @@
 CC = gcc
-WARN_FLAGS = -Wall -Wextra                # always on
-STRICT_WARN_FLAGS = -Werror               # only for release
+WARN_FLAGS = -Wall -Wextra
 CFLAGS = $(WARN_FLAGS) -std=c99 -I./lib
 
-DEBUG_FLAGS = -ggdb -O0
-RELEASE_FLAGS = -O2 -DNDEBUG
+DEBUG_FLAGS = -ggdb -O0 -DDEBUG
+RELEASE_FLAGS = -O2 -DNDEBUG -Werror
 
 LDFLAGS = -L$(BUILD_DIR) -larray -lSDL2 -lm
 
-SRC = ./src/*.c
+SRC = $(wildcard ./src/*.c)
 BUILD_DIR = build
 
-TARGET_DEBUG = $(BUILD_DIR)/renderer_debug
+TARGET_DEBUG   = $(BUILD_DIR)/renderer_debug
 TARGET_RELEASE = $(BUILD_DIR)/renderer_release
 
-LIBRARY = $(BUILD_DIR)/libarray.a
+LIB_OBJECT     = $(BUILD_DIR)/array.o
+LIBRARY        = $(BUILD_DIR)/libarray.a
 
-# Ensure build directory exists
+# Ensure build directory always exists
 $(shell mkdir -p $(BUILD_DIR))
 
-debug: CFLAGS += $(DEBUG_FLAGS)
+# Full debug cycle: build + run
 debug: build-debug run-debug
 
-release: CFLAGS += $(RELEASE_FLAGS) $(STRICT_WARN_FLAGS)
+# Full release cycle: build + run
 release: build-release run-release
 
-build-debug: $(LIBRARY)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET_DEBUG) $(LDFLAGS)
+build-debug: CFLAGS += $(DEBUG_FLAGS)
+build-debug: $(TARGET_DEBUG)
 
-build-release: $(LIBRARY)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET_RELEASE) $(LDFLAGS)
+build-release: CFLAGS += $(RELEASE_FLAGS)
+build-release: $(TARGET_RELEASE)
 
-$(LIBRARY): ./lib/array.c
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $(BUILD_DIR)/array.o
-	ar rcs $@ $(BUILD_DIR)/array.o
+$(TARGET_DEBUG): $(LIBRARY) $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
+
+$(TARGET_RELEASE): $(LIBRARY) $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
+
+$(LIB_OBJECT): ./lib/array.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIBRARY): $(LIB_OBJECT)
+	ar rcs $@ $^
 
 run-debug:
 	./$(TARGET_DEBUG)
@@ -43,5 +51,3 @@ run-release:
 
 clean:
 	rm -rf $(BUILD_DIR)
-
-
