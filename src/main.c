@@ -259,14 +259,20 @@ void update(void) {
             .points = {{
                            projected_points[0].x,
                            projected_points[0].y,
+                           projected_points[0].z,
+                           projected_points[0].w,
                        },
                        {
                            projected_points[1].x,
                            projected_points[1].y,
+                           projected_points[1].z,
+                           projected_points[1].w,
                        },
                        {
                            projected_points[2].x,
                            projected_points[2].y,
+                           projected_points[2].z,
+                           projected_points[2].w,
                        }},
             .texcoords =
                 {
@@ -307,10 +313,16 @@ void render(void) {
 
         float x0 = triangle.points[0].x;
         float y0 = triangle.points[0].y;
+        float z0 = triangle.points[0].z;
+        float w0 = triangle.points[0].w;
         float x1 = triangle.points[1].x;
         float y1 = triangle.points[1].y;
+        float z1 = triangle.points[1].z;
+        float w1 = triangle.points[1].w;
         float x2 = triangle.points[2].x;
         float y2 = triangle.points[2].y;
+        float z2 = triangle.points[2].z;
+        float w2 = triangle.points[2].w;
 
         float u0 = triangle.texcoords[0].u;
         float v0 = triangle.texcoords[0].v;
@@ -325,8 +337,8 @@ void render(void) {
 
         if (render_method == RENDER_TEXTURED ||
             render_method == RENDER_TEXTURED_WIRE) {
-            draw_textured_triangle(x0, y0, u0, v0, x1, y1, u1, v1, x2, y2, u2,
-                                   v2, mesh_texture);
+            draw_textured_triangle(x0, y0, z0, w0, u0, v0, x1, y1, z1, w1, u1,
+                                   v1, x2, y2, z2, w2, u2, v2, mesh_texture);
         }
 
         if (render_method == RENDER_WIRE ||
