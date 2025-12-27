@@ -1,6 +1,5 @@
 #include "triangle.h"
 #include "display.h"
-#include "log.h"
 
 #define SWAP(type, a, b)                                                       \
     do {                                                                       \
@@ -114,6 +113,9 @@ void draw_texel(int x, int y, uint32_t *texture, vec4_t point_a, vec4_t point_b,
     float alpha = weights.x;
     float beta = weights.y;
     float gamma = weights.z;
+
+    if (alpha < 0.0f || beta < 0.0f || gamma < 0.0f)
+        return;
 
     float interpolated_u = (a_uv.u / point_a.w) * alpha +
                            (b_uv.u / point_b.w) * beta +
