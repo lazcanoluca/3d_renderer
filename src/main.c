@@ -373,8 +373,10 @@ void render(void) {
 
 void free_resources() {
     free(color_buffer);
+    free(z_buffer);
     array_free(mesh.faces);
     array_free(mesh.vertices);
+    upng_free(png_texture);
 }
 
 int main(void) {
