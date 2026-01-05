@@ -105,6 +105,7 @@ void setup(void) {
     color_buffer =
         (argb_t *)malloc(sizeof(argb_t) * window_width * window_height);
 
+    z_buffer = (float *)malloc(sizeof(float) * window_width * window_height);
     // TODO: check malloc
 
     color_buffer_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
@@ -239,13 +240,6 @@ void update(void) {
             projected_points[j].y += (window_height / 2.0);
         }
 
-        // Calc the avg depth for each face based on the vertices
-        // after transformation
-        float avg_depth =
-            (transformed_vertices[0].z + transformed_vertices[1].z +
-             transformed_vertices[2].z) /
-            3.0;
-
         // Calculate the shade intensity based on how aligned the face normal
         // and the light are.
         float light_intensity_factor = -vec3_dot(normal, light.direction);
@@ -278,26 +272,13 @@ void update(void) {
                     {mesh_face.b_uv.u, mesh_face.b_uv.v},
                     {mesh_face.c_uv.u, mesh_face.c_uv.v},
                 },
-            .color = triangle_color,
-            .avg_depth = avg_depth};
+            .color = triangle_color};
 
         // save the projected triangle in the array of triangles to render
         /*triangles_to_render[i] = projected_triangle;*/
         array_push(triangles_to_render, projected_triangle);
     }
 
-    // Sorting the triangles the render by their average depth
-    int num_triangles = array_length(triangles_to_render);
-    for (int i = 0; i < num_triangles; i++) {
-        for (int j = i; j < num_triangles; j++) {
-            if (triangles_to_render[i].avg_depth <
-                triangles_to_render[j].avg_depth) {
-                triangle_t temp = triangles_to_render[i];
-                triangles_to_render[i] = triangles_to_render[j];
-                triangles_to_render[j] = temp;
-            }
-        }
-    }
 }
 
 void render(void) {
@@ -331,7 +312,8 @@ void render(void) {
 
         if (render_method == RENDER_FILL_TRIANGLE ||
             render_method == RENDER_FILL_TRIANGLE_WIRE)
-            draw_filled_triangle(x0, y0, x1, y1, x2, y2, triangle.color);
+            draw_filled_triangle(x0, y0, z0, w0, x1, y1, z1, w1, x2, y2, z2, w2,
+                                 triangle.color);
 
         if (render_method == RENDER_TEXTURED ||
             render_method == RENDER_TEXTURED_WIRE) {
@@ -367,6 +349,7 @@ void render(void) {
 
     // draw for next frame
     clear_color_buffer(COLOR_BLACK);
+    clear_z_buffer();
 
     SDL_RenderPresent(renderer);
 }
