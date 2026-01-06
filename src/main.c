@@ -26,7 +26,9 @@
 #define N_POINTS 729
 
 // stores the actual triangles in 2D to render
-triangle_t *triangles_to_render = NULL;
+#define MAX_TRIANGLES_TO_RENDER 10000
+triangle_t triangles_to_render[MAX_TRIANGLES_TO_RENDER];
+int num_triangles_to_render = 0;
 
 vec3_t camera_position = {0, 0, 0};
 
@@ -144,7 +146,7 @@ void update(void) {
 
     previous_frame_time = SDL_GetTicks();
 
-    triangles_to_render = NULL;
+    num_triangles_to_render = 0;
 
     mesh.rotation.x += 0.02;
     mesh.rotation.y += 0.03;
@@ -276,18 +278,18 @@ void update(void) {
 
         // save the projected triangle in the array of triangles to render
         /*triangles_to_render[i] = projected_triangle;*/
-        array_push(triangles_to_render, projected_triangle);
+        if (num_triangles_to_render < MAX_TRIANGLES_TO_RENDER) {
+            triangles_to_render[num_triangles_to_render++] = projected_triangle;
+        }
     }
-
 }
 
 void render(void) {
     draw_grid(0xFF555555);
 
     // loop all projected triangles and render them
-    int num_triangles = array_length(triangles_to_render);
 
-    for (int i = 0; i < num_triangles; i++) {
+    for (int i = 0; i < num_triangles_to_render; i++) {
         triangle_t triangle = triangles_to_render[i];
 
         float x0 = triangle.points[0].x;
@@ -340,9 +342,6 @@ void render(void) {
                       COLOR_BLUE);
         }
     }
-
-    // clear the array of tris to render every frame loop
-    array_free(triangles_to_render);
 
     // render to sdl buffer
     render_color_buffer();
