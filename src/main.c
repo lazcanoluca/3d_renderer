@@ -1,4 +1,5 @@
 #include "../lib/array.h"
+#include "camera.h"
 #include "display.h"
 #include "light.h"
 #include "matrix.h"
@@ -30,9 +31,9 @@
 triangle_t triangles_to_render[MAX_TRIANGLES_TO_RENDER];
 int num_triangles_to_render = 0;
 
-vec3_t camera_position = {0, 0, 0};
-
 mat4_t proj_matrix;
+mat4_t world_matrix;
+mat4_t view_matrix;
 
 #define COLOR_BLACK 0xFF000000
 #define COLOR_WHITE 0xFFFFFFFF
@@ -156,7 +157,9 @@ void update(void) {
     /*mesh.scale.y += 0.001;*/
 
     /*mesh.translation.x += 0.01;*/
-    mesh.translation.z = 5.0;
+    vec3_t target = {0, 0, 4.0};
+    vec3_t up = {0, 1, 0};
+    view_matrix = mat4_look_at(camera.position, target, up);
 
     mat4_t scale_matrix = mat4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
     mat4_t translation_matrix = mat4_translation(
@@ -182,7 +185,7 @@ void update(void) {
 
             // Create world matrix combining scale, rotation and
             // translation.
-            mat4_t world_matrix = mat4_identity();
+            world_matrix = mat4_identity();
             world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
@@ -192,6 +195,10 @@ void update(void) {
             // Transform vector by world matrix.
             transformed_vertex =
                 mat4_mul_vec4(world_matrix, transformed_vertex);
+
+            // Multiply the view matrix by the vector to transform the scene to
+            // cam view
+            transformed_vertex = mat4_mul_vec4(view_matrix, transformed_vertex);
 
             transformed_vertices[j] = transformed_vertex;
         }
@@ -209,7 +216,8 @@ void update(void) {
         vec3_t normal = vec3_cross(vector_ab, vector_ac);
         vec3_normalize(&normal);
 
-        vec3_t camera_ray = vec3_sub(camera_position, vector_a);
+        vec3_t origin = {0, 0, 0};
+        vec3_t camera_ray = vec3_sub(origin, vector_a);
 
         // calc how aligned the camera ray is with the face normal
         float dot_normal_camera = vec3_dot(normal, camera_ray);
