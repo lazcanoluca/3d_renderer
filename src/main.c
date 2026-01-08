@@ -43,6 +43,7 @@ mat4_t view_matrix;
 
 bool is_running = false;
 int previous_frame_time = 0;
+float delta_time = 0;
 
 void process_input() {
     SDL_Event event;
@@ -145,18 +146,22 @@ void update(void) {
         SDL_Delay(time_to_wait);
     }
 
+    float delta_time = (SDL_GetTicks() - previous_frame_time) / 1000.0;
+
     previous_frame_time = SDL_GetTicks();
 
     num_triangles_to_render = 0;
 
-    mesh.rotation.x += 0.02;
-    mesh.rotation.y += 0.03;
-    mesh.rotation.z += 0.05;
+    mesh.rotation.x += 0.6 * delta_time;
+    mesh.rotation.y += 0.6 * delta_time;
+    mesh.rotation.z += 0.6 * delta_time;
 
-    /*mesh.scale.x += 0.002;*/
-    /*mesh.scale.y += 0.001;*/
+    mesh.translation.z = 4.0;
 
-    /*mesh.translation.x += 0.01;*/
+    // move camera
+    camera.position.x += 0.008 * delta_time;
+    camera.position.y += 0.008 * delta_time;
+
     vec3_t target = {0, 0, 4.0};
     vec3_t up = {0, 1, 0};
     view_matrix = mat4_look_at(camera.position, target, up);
