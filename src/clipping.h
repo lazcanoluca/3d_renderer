@@ -22,6 +22,7 @@ typedef struct {
 
 typedef struct {
     vec3_t vertices[MAX_NUM_POLY_VERTICES];
+    tex2_t texcoords[MAX_NUM_POLY_VERTICES];
     int num_vertices;
 } polygon_t;
 
@@ -31,7 +32,7 @@ typedef struct {
 
 void init_frustum_planes(float fov_x, float fov_y, float z_near, float z_far);
 
-polygon_t polygon_from_triangle(vec3_t v0, vec3_t v1, vec3_t v2);
+polygon_t polygon_from_triangle(vec3_t v0, vec3_t v1, vec3_t v2, tex2_t uv0, tex2_t uv1, tex2_t uv2);
 
 void polygon_clip_against_plane(polygon_t *polygon, int plane);
 // void polygon_clip_against_frustum(polygon_t* polygon, frustum_t* frustum);
