@@ -105,18 +105,6 @@ mat4_t mat4_mul_mat4(mat4_t a, mat4_t b) {
     return m;
 }
 
-vec4_t mat4_mul_vec4_project(mat4_t mat_proj, vec4_t v) {
-    vec4_t result = mat4_mul_vec4(mat_proj, v);
-
-    if (result.w != 0.0) {
-        result.x /= result.w;
-        result.y /= result.w;
-        result.z /= result.w;
-    }
-
-    return result;
-}
-
 mat4_t mat4_look_at(vec3_t eye, vec3_t target, vec3_t up) {
     vec3_t z = vec3_sub(target, eye);
     vec3_normalize(&z);

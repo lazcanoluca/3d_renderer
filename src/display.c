@@ -100,6 +100,16 @@ void destroy_window(void) {
 }
 
 void clear_color_buffer(argb_t color) {
+    // for (int y = 0; y < window_height; y++) {
+    //     for (int x = 0; x < window_width; x++) {
+    //         color_buffer[(window_width * y) + x] = color;
+    //     }
+    // }
+
+    for (int i = 0; i < window_width * window_height; i++) {
+        color_buffer[i] = color;
+    }
+}
 
 void clear_z_buffer() {
     for (int y = 0; y < window_height; y++) {

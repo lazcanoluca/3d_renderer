@@ -160,8 +160,8 @@ void setup(void) {
 
     init_frustum_planes(fov_x, fov_y, znear, zfar);
 
-    load_obj_file_data("./assets/cube.obj");
-    load_png_texture_data("./assets/cube.png");
+    load_obj_file_data("./assets/f117.obj");
+    load_png_texture_data("./assets/f117.png");
 }
 
 /*vec2_t project(vec3_t point) {*/

@@ -41,4 +41,5 @@ void draw_triangle_texel(int x, int y, uint32_t *texture, vec4_t point_a,
 void draw_triangle_pixel(int x, int y, argb_t color, vec4_t point_a,
                          vec4_t point_b, vec4_t point_c);
 
+
 #endif
