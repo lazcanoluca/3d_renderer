@@ -188,6 +188,10 @@ void update(void) {
 
     num_triangles_to_render = 0;
 
+    mesh.rotation.x += 0.6 * delta_time;
+    mesh.rotation.y += 0.6 * delta_time;
+    mesh.rotation.z += 0.6 * delta_time;
+
     mesh.translation.z = 4.0;
 
     vec3_t up = {0, 1, 0};
